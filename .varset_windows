@@ -1,0 +1,11 @@
+#*********************************************
+#                       VARSET
+#*********************************************
+NAME_SHELL=SH_ProcesaTareaProgCBIO
+HOME_REQUEST=C:\\gits\\$NAME_SHELL\\remote
+DIR_LOG=$HOME_REQUEST\\LOG
+LOG_NAME_REQUEST=$NAME_SHELL
+JAVA_PATH="C:\\Program Files\\Java\\jdk1.8.0_73\\bin\\"
+PROPERTIES_PATH=$HOME_REQUEST\\$NAME_SHELL.properties
+
+export HOME_REQUEST DIR_LOG LOG_NAME_REQUEST JAVA_PATH PROPERTIES_PATH
