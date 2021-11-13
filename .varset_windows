@@ -1,7 +1,7 @@
 #*********************************************
 #                       VARSET
 #*********************************************
-NAME_SHELL=SH_ProcesaTareaProgCBIO
+NAME_SHELL=SH_TEST
 HOME_REQUEST=C:\\gits\\$NAME_SHELL\\remote
 DIR_LOG=$HOME_REQUEST\\LOG
 LOG_NAME_REQUEST=$NAME_SHELL
