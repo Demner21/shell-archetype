@@ -1,0 +1,19 @@
+##############################
+## Maven
+##############################
+target/
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+##############################
+## Visual Studio Code
+##############################
+.vscode/
+##############################
+## Eclipse
+##############################
+.settings/
+bin/
+tmp/
+.metadata
+.classpath
+.project
