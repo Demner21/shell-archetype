@@ -26,8 +26,18 @@
 
 package com.dmnr.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dmnr.test.service.EstadosRecursoService;
+
 public class Application {
+  private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+  
+  EstadosRecursoService estadosRecursoService= EstadosRecursoService.estadosRecursoService();
+  
   public static void main(String[] args) {
+    LOG.info("Test slf4j");
     System.out.println("Hello World!");
   }
 }
