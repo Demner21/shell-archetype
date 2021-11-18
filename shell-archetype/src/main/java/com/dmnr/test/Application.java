@@ -29,6 +29,7 @@ package com.dmnr.test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dmnr.test.bean.EstadosRecurso;
 import com.dmnr.test.service.EstadosRecursoService;
 
 public class Application {
@@ -37,7 +38,14 @@ public class Application {
   EstadosRecursoService estadosRecursoService= EstadosRecursoService.estadosRecursoService();
   
   public static void main(String[] args) {
-    LOG.info("Test slf4j");
-    System.out.println("Hello World!");
+    LOG.info("iniciando main");
+    var app= new Application();
+    var estadoRecursoEncontrado = app.validarEstadoRecurso(1);
+    LOG.info("{}" , estadoRecursoEncontrado);
   }
+  
+  EstadosRecurso validarEstadoRecurso(int userId) {
+    return estadosRecursoService.estadosRecurso(userId);
+  }
+  
 }
