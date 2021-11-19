@@ -26,6 +26,13 @@
 
 package com.dmnr.test;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,15 +44,37 @@ public class Application {
   
   EstadosRecursoService estadosRecursoService= EstadosRecursoService.estadosRecursoService();
   
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando main");
     var app= new Application();
     var estadoRecursoEncontrado = app.validarEstadoRecurso(1);
     LOG.info("{}" , estadoRecursoEncontrado);
+    var estadoRecursoEncontradoFast = app.validarEstadoRecursoFast(1);
+    LOG.info("{}" , estadoRecursoEncontradoFast);
   }
   
-  EstadosRecurso validarEstadoRecurso(int userId) {
+  public EstadosRecurso validarEstadoRecurso(int userId) {
+    LOG.info("iniciando validarEstadoRecurso");
     return estadosRecursoService.estadosRecurso(userId);
   }
+  
+  public EstadosRecurso validarEstadoRecursoFast(int userId) throws InterruptedException, ExecutionException, TimeoutException {
+    LOG.info("iniciando validarEstadoRecursoFast");
+    Future<EstadosRecurso> fResultado = se.submit(()-> {
+      Future<EstadosRecurso> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
+      EstadosRecurso estadosRecurso=null;
+      try {
+        estadosRecurso = fEstadoRecurso.get();
+      } catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+      }finally {
+        se.shutdown();
+      }
+      return estadosRecurso;
+    });
+    return fResultado.get(500, TimeUnit.MILLISECONDS);
+    
+  }
+  private final ScheduledExecutorService se = Executors.newScheduledThreadPool(5);
   
 }

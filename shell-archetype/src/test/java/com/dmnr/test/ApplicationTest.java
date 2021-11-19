@@ -27,9 +27,15 @@
 package com.dmnr.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import com.dmnr.test.bean.EstadosRecurso;
 
 @DisplayName("Application")
 public class ApplicationTest {
@@ -38,5 +44,13 @@ public class ApplicationTest {
   @DisplayName("Pointless test")
   void smokeTest() {
     assertThat(true).isEqualTo(true);
+  }
+  
+  @Test
+  @Timeout(value= 500, unit=TimeUnit.MILLISECONDS)
+  void testName() throws Exception {
+    Application app = new Application();
+    EstadosRecurso result = app.validarEstadoRecursoFast(2);
+    assertNotNull(result);
   }
 }
