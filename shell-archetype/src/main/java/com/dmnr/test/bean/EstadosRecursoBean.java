@@ -5,15 +5,15 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
-public class EstadosRecurso {
+public class EstadosRecursoBean {
   private Set<String> estados;
 
-  EstadosRecurso(HashSet<String> estadosRecurso) {
+  EstadosRecursoBean(HashSet<String> estadosRecurso) {
     this.estados = estadosRecurso;
   }
 
-  public static EstadosRecurso estadosRecurso(String... estadosRecurso) {
-    return new EstadosRecurso(Sets.newHashSet(estadosRecurso));
+  public static EstadosRecursoBean estadosRecurso(String... estadosRecurso) {
+    return new EstadosRecursoBean(Sets.newHashSet(estadosRecurso));
   }
 
   public boolean poseeEstadoRecurso(String estado) {
@@ -41,7 +41,7 @@ public class EstadosRecurso {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    EstadosRecurso other = (EstadosRecurso) obj;
+    EstadosRecursoBean other = (EstadosRecursoBean) obj;
     if (estados == null) {
       if (other.estados != null)
         return false;
@@ -49,6 +49,4 @@ public class EstadosRecurso {
       return false;
     return true;
   }
-  
-  
 }

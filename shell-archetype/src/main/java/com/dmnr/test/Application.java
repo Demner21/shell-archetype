@@ -36,7 +36,7 @@ import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dmnr.test.bean.EstadosRecurso;
+import com.dmnr.test.bean.EstadosRecursoBean;
 import com.dmnr.test.service.EstadosRecursoService;
 
 public class Application {
@@ -53,16 +53,16 @@ public class Application {
     LOG.info("{}" , estadoRecursoEncontradoFast);
   }
   
-  public EstadosRecurso validarEstadoRecurso(int userId) {
+  public EstadosRecursoBean validarEstadoRecurso(int userId) {
     LOG.info("iniciando validarEstadoRecurso");
     return estadosRecursoService.estadosRecurso(userId);
   }
   
-  public EstadosRecurso validarEstadoRecursoFast(int userId) throws InterruptedException, ExecutionException, TimeoutException {
+  public EstadosRecursoBean validarEstadoRecursoFast(int userId) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando validarEstadoRecursoFast");
-    Future<EstadosRecurso> fResultado = se.submit(()-> {
-      Future<EstadosRecurso> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
-      EstadosRecurso estadosRecurso=null;
+    Future<EstadosRecursoBean> fResultado = se.submit(()-> {
+      Future<EstadosRecursoBean> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
+      EstadosRecursoBean estadosRecurso=null;
       try {
         estadosRecurso = fEstadoRecurso.get();
       } catch (InterruptedException | ExecutionException e) {

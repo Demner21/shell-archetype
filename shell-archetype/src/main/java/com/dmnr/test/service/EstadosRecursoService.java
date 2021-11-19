@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dmnr.test.bean.Config;
-import com.dmnr.test.bean.EstadosRecurso;
+import com.dmnr.test.bean.EstadosRecursoBean;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -29,21 +29,21 @@ public class EstadosRecursoService {
 
   private final ListeningScheduledExecutorService ls = MoreExecutors.listeningDecorator(executor);
 
-  private Map<Integer, EstadosRecurso> estados;
+  private Map<Integer, EstadosRecursoBean> estados;
 
-  private EstadosRecursoService(Map<Integer, EstadosRecurso> estadosRecursos) {
+  private EstadosRecursoService(Map<Integer, EstadosRecursoBean> estadosRecursos) {
     this.estados = estadosRecursos;
   }
 
   public static EstadosRecursoService estadosRecursoService() {
-    Map<Integer, EstadosRecurso> of = Map.of(
-                                      1, EstadosRecurso.estadosRecurso("INICIADO", "PROCESADO"), 
-                                      2, EstadosRecurso.estadosRecurso("INICIADO")
+    Map<Integer, EstadosRecursoBean> of = Map.of(
+                                      1, EstadosRecursoBean.estadosRecurso("INICIADO", "PROCESADO"), 
+                                      2, EstadosRecursoBean.estadosRecurso("INICIADO")
                                       );
     return new EstadosRecursoService(of);
   }
   
-  public EstadosRecurso estadosRecurso(int userId) {
+  public EstadosRecursoBean estadosRecurso(int userId) {
     Uninterruptibles.sleepUninterruptibly(Config.PERMISSION_DELAY, TimeUnit.MILLISECONDS);
     LOG.info("Permission lookup complete");
     return estados.get(userId);
