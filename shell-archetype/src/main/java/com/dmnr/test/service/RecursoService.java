@@ -34,7 +34,7 @@ public class RecursoService {
                                      "RECURSO_2", new Recurso("RECURSO_2") ));
   }
 
-  public Recurso lookupChannel(String nombre) {
+  public Recurso lookupRecurso(String nombre) {
     Uninterruptibles.sleepUninterruptibly(Config.CHANNEL_DELAY, TimeUnit.MILLISECONDS);
     LOG.info("Channel lookup complete");
     return recursos.get(nombre);

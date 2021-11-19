@@ -37,6 +37,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dmnr.test.bean.EstadosRecursoBean;
+import com.dmnr.test.bean.Recurso;
+import com.dmnr.test.bean.Resultado;
+import com.dmnr.test.bean.Usuario;
 import com.dmnr.test.service.EstadosRecursoService;
 import com.dmnr.test.service.RecursoService;
 import com.dmnr.test.service.UsuarioService;
@@ -57,6 +60,8 @@ public class Application {
     LOG.info("{}" , estadoRecursoEncontrado);
     var estadoRecursoEncontradoFast = app.validarEstadoRecursoFast(1);
     LOG.info("{}" , estadoRecursoEncontradoFast);
+    var resultadoFast = app.validarResultadoFast("chbatey","RECURSO_1");
+    LOG.info("{}" , resultadoFast);
   }
   
   public EstadosRecursoBean validarEstadoRecurso(int userId) {
@@ -67,14 +72,23 @@ public class Application {
   public EstadosRecursoBean validarEstadoRecursoFast(int userId) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando validarEstadoRecursoFast");
     Future<EstadosRecursoBean> fResultado = se.submit(()-> {
-      try{
         Future<EstadosRecursoBean> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
         return fEstadoRecurso.get();
-      }finally {
-        se.shutdown();
-      }
     });
     return fResultado.get(500, TimeUnit.MILLISECONDS);
+  }
+  
+  public Resultado validarResultadoFast(String nombreUsuario,String nombreRecurso) throws InterruptedException, ExecutionException, TimeoutException {
+    LOG.info("iniciando validarResultadoFast");
+    Future<Resultado> fResultado = se.submit(()-> {
+      Future<Recurso> fRecurso = se.submit(()-> recursoService.lookupRecurso(nombreRecurso));
+      Usuario usuario = usuarioService.lookupUser(nombreUsuario);
+      EstadosRecursoBean estadosRecurso = estadosRecursoService.estadosRecurso(usuario.getIdUsuario());
+      Recurso recurso = fRecurso.get();
+      return new Resultado(estadosRecurso, recurso);
+    });
+    
+    return fResultado.get(1500, TimeUnit.MILLISECONDS);
   }
 
   private final ScheduledExecutorService se = Executors.newScheduledThreadPool(5);

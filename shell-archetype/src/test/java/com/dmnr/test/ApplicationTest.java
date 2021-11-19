@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import com.dmnr.test.bean.EstadosRecursoBean;
+import com.dmnr.test.bean.Resultado;
 
 @DisplayName("Application")
 public class ApplicationTest {
@@ -52,5 +53,13 @@ public class ApplicationTest {
     Application app = new Application();
     EstadosRecursoBean result = app.validarEstadoRecursoFast(2);
     assertNotNull(result);
+  }
+  
+  @Test
+  @Timeout(value= 1500, unit=TimeUnit.MILLISECONDS)
+  void testResultadoFast() throws Exception {
+    Application app = new Application();
+    Resultado resultadoFast = app.validarResultadoFast("chbatey","RECURSO_1");
+    assertNotNull(resultadoFast);
   }
 }
