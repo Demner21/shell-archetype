@@ -29,7 +29,7 @@ public class RecursoService {
     this.recursos = recursos;
   }
 
-  public static RecursoService channelService() {
+  public static RecursoService recursoService() {
     return new RecursoService(Map.of("RECURSO_1", new Recurso("RECURSO_1"),
                                      "RECURSO_2", new Recurso("RECURSO_2") ));
   }

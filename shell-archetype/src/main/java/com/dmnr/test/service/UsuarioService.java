@@ -27,7 +27,7 @@ public class UsuarioService {
     this.usuarios = usuarios;
   }
 
-  public static UsuarioService userService() {
+  public static UsuarioService usuarioService() {
     return new UsuarioService(Map.of(
         "chbatey",new Usuario("Christopher Batey", "chbatey", 1), 
         "trevor",new Usuario("Trevor Sinclair", "trevor", 2)));

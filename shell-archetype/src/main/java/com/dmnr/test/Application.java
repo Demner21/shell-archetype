@@ -38,11 +38,17 @@ import org.slf4j.LoggerFactory;
 
 import com.dmnr.test.bean.EstadosRecursoBean;
 import com.dmnr.test.service.EstadosRecursoService;
+import com.dmnr.test.service.RecursoService;
+import com.dmnr.test.service.UsuarioService;
 
 public class Application {
   private static final Logger LOG = LoggerFactory.getLogger(Application.class);
   
   EstadosRecursoService estadosRecursoService= EstadosRecursoService.estadosRecursoService();
+  
+  UsuarioService usuarioService= UsuarioService.usuarioService();
+  
+  RecursoService recursoService= RecursoService.recursoService();
   
   public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando main");
@@ -61,20 +67,16 @@ public class Application {
   public EstadosRecursoBean validarEstadoRecursoFast(int userId) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando validarEstadoRecursoFast");
     Future<EstadosRecursoBean> fResultado = se.submit(()-> {
-      Future<EstadosRecursoBean> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
-      EstadosRecursoBean estadosRecurso=null;
-      try {
-        estadosRecurso = fEstadoRecurso.get();
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
+      try{
+        Future<EstadosRecursoBean> fEstadoRecurso = se.submit(()-> estadosRecursoService.estadosRecurso(userId));
+        return fEstadoRecurso.get();
       }finally {
         se.shutdown();
       }
-      return estadosRecurso;
     });
     return fResultado.get(500, TimeUnit.MILLISECONDS);
-    
   }
+
   private final ScheduledExecutorService se = Executors.newScheduledThreadPool(5);
   
 }
