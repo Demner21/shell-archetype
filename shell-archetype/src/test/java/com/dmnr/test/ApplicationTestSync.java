@@ -38,8 +38,8 @@ import org.junit.jupiter.api.Timeout;
 import com.dmnr.test.bean.EstadosRecursoBean;
 import com.dmnr.test.bean.Resultado;
 
-@DisplayName("Application")
-public class ApplicationTest {
+@DisplayName("ApplicationSync")
+public class ApplicationTestSync {
 
   @Test
   @DisplayName("Pointless test")
