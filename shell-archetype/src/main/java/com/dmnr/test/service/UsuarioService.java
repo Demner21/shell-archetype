@@ -1,6 +1,7 @@
 package com.dmnr.test.service;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -38,4 +39,16 @@ public class UsuarioService {
     LOG.info("User look up complete");
     return usuarios.get(nombreUsuario);
   }
+  
+  public CompletableFuture<Usuario> lookupUserCompletable(String userName) {
+    CompletableFuture<Usuario> cUser = new CompletableFuture<>();
+    // How you can very easily wrap existing APIs with an API that returns
+    // completable futures.
+    executor.schedule(() -> {
+                LOG.info("User lookup complete");
+                cUser.complete(usuarios.get(userName));
+            },
+            Config.USER_DELAY, TimeUnit.MILLISECONDS);
+    return cUser;
+}
 }

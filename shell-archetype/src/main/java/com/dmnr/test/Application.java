@@ -26,6 +26,7 @@
 
 package com.dmnr.test;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -45,6 +46,8 @@ import com.dmnr.test.service.RecursoService;
 import com.dmnr.test.service.UsuarioService;
 
 public class Application {
+  private static final String SEPARATOR = "--------------------------------------------------";
+
   private static final Logger LOG = LoggerFactory.getLogger(Application.class);
   
   EstadosRecursoService estadosRecursoService= EstadosRecursoService.estadosRecursoService();
@@ -56,12 +59,20 @@ public class Application {
   public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
     LOG.info("iniciando main");
     var app= new Application();
+    LOG.info(SEPARATOR);
     var estadoRecursoEncontrado = app.validarEstadoRecurso(1);
     LOG.info("{}" , estadoRecursoEncontrado);
+    LOG.info(SEPARATOR);
     var estadoRecursoEncontradoFast = app.validarEstadoRecursoFast(1);
     LOG.info("{}" , estadoRecursoEncontradoFast);
+    LOG.info(SEPARATOR);
     var resultadoFast = app.validarResultadoFast("chbatey","RECURSO_1");
     LOG.info("{}" , resultadoFast);
+    LOG.info(SEPARATOR);
+    var usuarioFast = app.validarUsuarioAsync("chbatey");
+    LOG.info("{}" , usuarioFast);
+    LOG.info(SEPARATOR);
+    
   }
   
   public EstadosRecursoBean validarEstadoRecurso(int userId) {
@@ -89,6 +100,13 @@ public class Application {
     });
     
     return fResultado.get(1500, TimeUnit.MILLISECONDS);
+  }
+  
+  
+  public Usuario validarUsuarioAsync(String username) throws InterruptedException, ExecutionException {
+    LOG.info("iniciando validarUsuarioAsync");
+    CompletableFuture<Usuario> cfUsuario = usuarioService.lookupUserCompletable(username);
+    return cfUsuario.get();
   }
 
   private final ScheduledExecutorService se = Executors.newScheduledThreadPool(5);
