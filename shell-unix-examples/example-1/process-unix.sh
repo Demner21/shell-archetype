@@ -5,8 +5,8 @@ rm $ruta/log/*log
 rm $ruta/data/*.dat
 
 declare -a List=(
-"SYSDATE-52"
-"SYSDATE-51"
+"SYSDATE-52.txt"
+"SYSDATE-51.txt"
 )
 
 for FILE_PROCESSING in "${List[@]}"
@@ -31,6 +31,16 @@ do
 
     #eliminando las ultimas 3 lineas
     #sed -i "$(( $(wc -l <$ruta/data/$FILE_PROCESSING)-3+1 )),$ d" $ruta/data/$FILE_PROCESSING 
+
+    #agregando al final del archivo el texto : 'NOMBRE_ARCHIVO'
+    #sed -i 's/$/;NOMBRE_ARCHIVO/' $ruta/data/$FILE_PROCESSING
+    
+    #Luego de agregar el texto al final del archivo, reemplazarlo por el nombre del archivo
+    search=NOMBRE_ARCHIVO
+    #quitando extension del archivo
+    NOMBRE_ARCHIVO_SIN_EXTENSION=${ARCHIVO_DATA%.txt}
+    #sed -i "s|$search|$NOMBRE_ARCHIVO_SIN_EXTENSION|g" $ruta/$RUTA_DATA
+
 done
 
 
